@@ -1,0 +1,100 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';
+
+export default function LoginPage() {
+  const router = useRouter();
+  const { login } = useAuth();
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      await login(formData.username, formData.password);
+      router.push('/');
+    } catch (err: any) {
+      setError(err.message || '로그인에 실패했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center py-12 px-4">
+      <div className="max-w-md w-full">
+        <div className="text-center mb-8">
+          <Link href="/" className="text-4xl font-bold text-green-600">
+            🌿 발효홍삼 쇼핑몰
+          </Link>
+          <h2 className="mt-6 text-3xl font-bold text-gray-900">로그인</h2>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-xl p-8">
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 border-2 border-red-300 rounded-lg text-red-900 font-medium">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-bold text-gray-800 mb-2">
+                아이디
+              </label>
+              <input
+                type="text"
+                value={formData.username}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 text-lg font-medium"
+                placeholder="아이디 입력"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-800 mb-2">
+                비밀번호
+              </label>
+              <input
+                type="password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900 text-lg font-medium"
+                placeholder="비밀번호 입력"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-600 text-white py-4 rounded-lg font-bold text-xl hover:bg-green-700 disabled:bg-gray-400 transition shadow-lg"
+            >
+              {loading ? '로그인 중...' : '로그인'}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-gray-700 font-medium">
+              계정이 없으신가요?{' '}
+              <Link href="/register" className="text-green-600 font-bold hover:text-green-700 underline">
+                회원가입
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

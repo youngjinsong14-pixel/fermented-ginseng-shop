@@ -1,0 +1,83 @@
+{% load wagtailcore_tags %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f0fdf4, #ffffff);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            background: #059669;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+        .header p {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        .content {
+            background: white;
+            padding: 60px;
+            margin-top: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .content h2 {
+            color: #059669;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background: #059669;
+            color: white;
+            padding: 20px 40px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 30px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌿 {{ page.banner_title }}</h1>
+        <p>{{ page.banner_subtitle }}</p>
+    </div>
+    
+    <div class="container">
+        <div class="content">
+            <h2>{{ page.intro_title }}</h2>
+            <div style="font-size: 1.2em; color: #555; margin: 20px 0;">
+                {{ page.intro_text|richtext }}
+            </div>
+            <a href="http://localhost:3000" class="btn">🛍️ 쇼핑몰 바로가기</a>
+        </div>
+    </div>
+</body>
+</html>
