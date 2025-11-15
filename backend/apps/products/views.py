@@ -1,22 +1,22 @@
-from rest_framework import viewsets, filters
-from django_filters.rest_framework import DjangoFilterBackend
-from .models import Category, Product
-from .serializers import CategorySerializer, ProductSerializer
+from rest_framework import generics
+from .models import Product, Category
+from .serializers import ProductSerializer, CategorySerializer
 
-class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    lookup_field = 'slug'
+class ProductListView(generics.ListAPIView):
+    queryset = Product.objects.filter(is_available=True)
+    serializer_class = ProductSerializer
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
 
-class ProductViewSet(viewsets.ReadOnlyModelViewSet):
+class ProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.filter(is_available=True)
     serializer_class = ProductSerializer
     lookup_field = 'slug'
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['category']
-    search_fields = ['name', 'description']
-    ordering_fields = ['price', 'created_at']
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
 
-class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = []
-    serializer_class = None
+class CategoryListView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

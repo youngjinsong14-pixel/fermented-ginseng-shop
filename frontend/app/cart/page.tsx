@@ -63,7 +63,7 @@ export default function CartPage() {
                   <div className="flex-grow">
                     <div className="text-sm text-green-600 font-semibold mb-1">{item.category_name}</div>
                     <h3 className="font-bold text-xl text-gray-800 mb-1">{item.name}</h3>
-                    <p className="text-green-600 font-bold text-lg">{item.price.toLocaleString()}원</p>
+                    <p className="text-green-600 font-bold text-lg">{Math.floor(item.price).toLocaleString()}원</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <button 
@@ -82,7 +82,7 @@ export default function CartPage() {
                   </div>
                   <div className="text-right w-36">
                     <div className="text-sm text-gray-600 font-medium mb-1">소계</div>
-                    <div className="font-bold text-2xl text-gray-900">{(item.price * item.quantity).toLocaleString()}원</div>
+                    <div className="font-bold text-2xl text-gray-900">{Math.floor(item.price * item.quantity).toLocaleString()}원</div>
                   </div>
                   <button 
                     onClick={() => removeFromCart(item.id)} 
@@ -101,7 +101,7 @@ export default function CartPage() {
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-gray-800 text-lg">
                   <span className="font-medium">상품 금액</span>
-                  <span className="font-bold">{total.toLocaleString()}원</span>
+                  <span className="font-bold">{Math.floor(total).toLocaleString()}원</span>
                 </div>
                 <div className="flex justify-between text-gray-800 text-lg">
                   <span className="font-medium">배송비</span>
@@ -109,13 +109,13 @@ export default function CartPage() {
                 </div>
                 <div className="border-t-2 border-gray-300 pt-4 flex justify-between font-bold text-xl">
                   <span className="text-gray-900">총 결제금액</span>
-                  <span className="text-green-600 text-2xl">{finalTotal.toLocaleString()}원</span>
+                  <span className="text-green-600 text-2xl">{Math.floor(finalTotal).toLocaleString()}원</span>
                 </div>
               </div>
               {needMore > 0 && (
                 <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 mb-4">
                   <p className="text-sm text-blue-900 font-semibold">
-                    💡 {needMore.toLocaleString()}원 더 구매하시면 무료배송!
+                    💡 {Math.floor(needMore).toLocaleString()}원 더 구매하시면 무료배송!
                   </p>
                 </div>
               )}
