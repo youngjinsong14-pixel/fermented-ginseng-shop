@@ -13,6 +13,8 @@ interface Product {
   category_name: string;
   stock: number;
   is_available: boolean;
+  image_url?: string | null;
+  thumbnail_url?: string | null;
 }
 
 export default function Home() {
@@ -28,17 +30,25 @@ export default function Home() {
 
   const fetchProducts = async () => {
     try {
+      console.log('🔄 제품 로딩 시작...');
       const response = await fetch('http://localhost:8000/api/products/');
       const data = await response.json();
       
-      // DRF 페이지네이션 확인
-      if (data.results && Array.isArray(data.results)) {
-        setProducts(data.results);
-      } else if (Array.isArray(data)) {
-        setProducts(data);
+      console.log('📦 API 응답:', data);
+      
+      let productList: Product[] = [];
+      if (Array.isArray(data)) {
+        productList = data;
+      } else if (data.results && Array.isArray(data.results)) {
+        productList = data.results;
       }
+      
+      console.log('✅ 제품 목록:', productList);
+      console.log('🖼️ 첫 제품 이미지:', productList[0]?.image_url);
+      
+      setProducts(productList);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('❌ Error fetching products:', error);
     } finally {
       setLoading(false);
     }
@@ -113,17 +123,26 @@ export default function Home() {
         ) : products.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-lg shadow-lg">
             <p className="text-gray-600 text-xl mb-4">등록된 제품이 없습니다</p>
-            <p className="text-gray-500 mb-6">관리자 페이지에서 제품을 추가해주세요</p>
-            <a href="http://localhost:8000/admin" target="_blank" className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
-              관리자 페이지로 이동
-            </a>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {products.map((product) => (
               <div key={product.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition transform hover:-translate-y-1">
-                <div className="h-64 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                  <span className="text-8xl">🌿</span>
+                <div className="h-64 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center overflow-hidden">
+                  {product.thumbnail_url || product.image_url ? (
+                    <img 
+                      src={product.thumbnail_url || product.image_url} 
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        console.error('❌ 이미지 로드 실패:', product.name, product.image_url);
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement!.innerHTML = '<span class="text-8xl">🌿</span>';
+                      }}
+                    />
+                  ) : (
+                    <span className="text-8xl">🌿</span>
+                  )}
                 </div>
                 <div className="p-6">
                   <div className="text-sm text-green-600 font-semibold mb-2">{product.category_name}</div>
