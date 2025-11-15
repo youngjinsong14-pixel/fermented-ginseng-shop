@@ -11,7 +11,7 @@ export default function CartPage() {
       <div className="min-h-screen bg-gray-50">
         <header className="bg-green-600 text-white shadow-lg">
           <div className="max-w-7xl mx-auto px-4 py-6">
-            <Link href="/" className="text-3xl font-bold">발효홍삼 쇼핑몰</Link>
+            <Link href="/" className="text-3xl font-bold">🌿 발효홍삼 쇼핑몰</Link>
           </div>
         </header>
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
@@ -34,7 +34,7 @@ export default function CartPage() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-green-600 text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <Link href="/" className="text-3xl font-bold">발효홍삼 쇼핑몰</Link>
+          <Link href="/" className="text-3xl font-bold">🌿 발효홍삼 쇼핑몰</Link>
         </div>
       </header>
 
@@ -49,8 +49,16 @@ export default function CartPage() {
             {cart.map((item) => (
               <div key={item.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
                 <div className="flex items-center gap-4">
-                  <div className="w-24 h-24 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-5xl">🌿</span>
+                  <div className="w-24 h-24 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {item.thumbnail_url || item.image_url ? (
+                      <img 
+                        src={item.thumbnail_url || item.image_url} 
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-5xl">🌿</span>
+                    )}
                   </div>
                   <div className="flex-grow">
                     <div className="text-sm text-green-600 font-semibold mb-1">{item.category_name}</div>

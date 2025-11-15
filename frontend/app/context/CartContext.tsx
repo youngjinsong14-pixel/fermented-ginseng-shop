@@ -6,8 +6,10 @@ interface Product {
   id: number;
   name: string;
   price: number;
-  slug: string;
-  category_name: string;
+  description?: string;
+  category_name?: string;
+  image_url?: string | null;
+  thumbnail_url?: string | null;
 }
 
 interface CartItem extends Product {
